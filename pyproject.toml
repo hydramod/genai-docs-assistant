@@ -1,7 +1,7 @@
 [project]
 name = "docs-assistant"
 version = "0.1.0"
-description = "Add your description here"
+description = "RAG assistant and LangGraph agent that answer from a handbook, with Langfuse tracing and LLM-judged evals"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

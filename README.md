@@ -1,77 +1,101 @@
-# docs-assistant
+# genai-docs-assistant
 
-Assignment: build a small agentic workflow. It's an assistant that answers questions about **Fernhill Works**, a made-up coworking space, using only its member handbook (`docs/`), and says so honestly when the handbook doesn't cover something. It uses RAG with Chroma, a LangGraph agent with a calculator tool, Langfuse tracing and an LLM-judged eval.
+An AI help desk assistant that answers questions **only from its own documents**, says plainly when the documents don't cover something, and **measures its own answer quality** with an LLM-judged eval.
+
+It uses retrieval-augmented generation (RAG) over a local vector database, a LangGraph agent that decides when to search and when to calculate, Langfuse tracing for every step, and production habits throughout: typed functions, logging, retry with backoff, keys kept in `.env`, and 36 tests.
+
+The documents are the member handbook of **Fernhill Works**, a fictional coworking space written for this project, so there's no real company or private data involved.
+
+## Example
+
+```
+Q: I've used up my credit. What would 3 extra hours in the Cedar room cost?
+
+   agent → search_handbook("Cedar room hourly price extra hours after credit used")
+   agent → calculator("3 * 35")
+
+A: Three extra hours in Cedar would cost £105. Once your credit is used up, Cedar is
+   charged at £35 an hour. You can book all 3 hours at once, because a single booking
+   can be up to 4 hours long. ...
+
+Q: Is there a gym at Fernhill Works?
+A: The handbook excerpts I have don't mention a gym, so I can't tell you whether
+   there is one. Please ask at reception.
+```
+
+## How it works
+
+```mermaid
+flowchart LR
+    docs[docs/*.md] -->|chunk_text: 500 chars, 100 overlap| chroma[(Chroma<br/>local embeddings)]
+    q([question]) --> rag[answer_question]
+    rag -->|top-k chunks| chroma
+    rag -->|excerpts + question| claude{{Claude}}
+    q --> agent[LangGraph agent]
+    agent <-->|decides which tool| claude
+    agent --> search[search_handbook] --> chroma
+    agent --> calc[calculator]
+    eval[evaluate.py] -->|12 questions| rag
+    eval --> judge[judge: score 1-5] --> claude
+```
 
 | File | What it does |
 | --- | --- |
-| `docs/` | The handbook: 5 Markdown files, 25 paragraphs, written for this project |
-| `ingest.py` | Step 1: `chunk_text` splits the docs into overlapping chunks, which are stored in a local Chroma database (`chroma_db/`) |
-| `llm.py` | Shared plumbing: `.env` loading, the Claude client, retry with backoff, refusal handling, and Langfuse cost reporting |
-| `assistant.py` | Step 2: `answer_question` retrieves the top chunks and asks Claude to answer from them only |
-| `agent.py` | Step 3: a LangGraph agent with two tools, `search_handbook` and a safe `calculator`, that decides which to use |
-| `evaluate.py` + `eval_set.json` | Step 5: 12 questions with notes on what a good answer contains, a `judge` that scores 1-5, and a report |
-| `test_*.py` | 36 pytest tests, including "the chunker produces overlapping chunks of the expected size" |
-| `eval_results/` | Saved eval runs (see Results below) |
+| `ingest.py` | Splits the handbook into overlapping chunks and stores them in a local Chroma database |
+| `assistant.py` | The RAG pipeline: `retrieve` the closest chunks, then `generate` an answer from them only |
+| `agent.py` | A LangGraph `model ⇄ tools` loop. Claude chooses between `search_handbook` and a safe `calculator` |
+| `evaluate.py` | Runs `eval_set.json` through the assistant, scores each answer 1–5 with an LLM judge, and compares runs |
+| `llm.py` | One place for every Claude call: `.env` loading, retry with backoff, refusal handling, Langfuse cost tracking |
+| `test_*.py` | 36 pytest tests. Everything except the live API calls is tested offline |
 
-## Setup
+## Evaluation results
 
-1. Get an Anthropic API key from https://platform.claude.com.
-2. Optional, for Step 4: create a free project at https://cloud.langfuse.com and copy its public and secret keys.
-3. Copy `.env.example` to `.env` and paste your keys in. `.env` is gitignored.
+12 questions, each with notes on what a good answer must contain. Two are deliberately unanswerable from the handbook, to check the assistant admits it rather than inventing an answer.
 
+| Run | Chunks retrieved | Average score (1–5) |
+| --- | --- | --- |
+| Baseline | 2 | 4.08 |
+| More chunks | 5 | **4.67** (+0.58) |
+
+What the numbers showed:
+
+- **Fixing the judge before trusting the score.** The first judge saw only the short answer notes, so it penalised true handbook facts the notes didn't mention, like the 10% annual discount. Giving the judge the whole handbook fixed that. The baseline was re-scored with the fixed judge so the two runs compare fairly. The original run is kept as `eval_results/baseline-original-judge.json` (3.67).
+- **Missed retrieval, not hallucination.** With 2 chunks, every low score was the assistant honestly saying "the handbook doesn't say" because the right chunk wasn't retrieved. Retrieving 5 chunks lifted those answers to 5/5.
+- **A known limitation.** "Can I come in on a Sunday with a Flex membership?" still fails in plain RAG. "Flex membership" pulls all five results toward pricing, so the "closed on Sundays" chunk is never retrieved. The **agent** answers it correctly by searching a second time for "opening hours weekend". Hybrid keyword + vector search, or rewriting the query before searching, would fix this for plain RAG.
+
+## Design decisions
+
+- **Grounded answers.** The system prompt allows only facts from the retrieved excerpts, and tells the model to say when the answer isn't there and to point the user to reception.
+- **Local embeddings.** Chroma's built-in all-MiniLM-L6-v2 model runs on your machine, so only the answering step needs an API key.
+- **Retry with backoff.** Rate limits, overloads and network errors are retried with exponential backoff and jitter. Bad requests and bad keys fail immediately, since retrying can't fix them. The SDK's own retries are off so the two don't stack.
+- **A calculator that can't run code.** It parses the expression and allows only numbers and arithmetic. `eval()` is never used on model output.
+- **A structured-output judge.** The API guarantees `{reason, score}` JSON with a score from 1 to 5. The reason comes first, so the judge explains before it decides.
+- **Accurate tracing.** Each question is one Langfuse trace (`answer_question` → `retrieve` → `generate` → `claude`) with timing, tokens and cost, and thinking tokens are priced as output. The Anthropic SDK's auto-instrumented spans are filtered out, since they would double-count each call.
+- **Refusal fallbacks.** `fallbacks: "default"` reruns a request on a fallback model if a safety classifier wrongly declines a harmless question.
+
+## Run it yourself
+
+Needs Python 3.12+ and [uv](https://docs.astral.sh/uv/).
+
+```bash
+cp .env.example .env            # add ANTHROPIC_API_KEY (Langfuse keys optional)
+uv run python ingest.py         # build the vector database (first run downloads an ~80 MB embedding model)
+uv run pytest -v                # 36 tests, no API key needed
 ```
-uv run python ingest.py       # builds chroma_db/ (first run downloads an ~80 MB embedding model)
-uv run pytest -v              # no API key needed
-```
 
-## Run it
-
-```
-uv run python assistant.py                                  # demo questions, incl. one it can't answer
+```bash
 uv run python assistant.py "Can I bring my dog on a Monday?"
-uv run python agent.py                                      # demo: retrieval-only, tool-only, and both
 uv run python agent.py "What would 3 extra hours in Cedar cost?"
-```
-
-## Observability (Step 4)
-
-With Langfuse keys in `.env`, every question becomes a trace in the Langfuse dashboard:
-
-- `answer_question` → `retrieve` (a retriever span listing the chunks found) → `generate` → `claude` (a generation with model, token counts and cost)
-- `run_agent` → `claude` → `search_handbook` / `calculator` tool spans → `claude` ...
-
-Each span shows its timing. Cost is calculated from the token counts at $4 / $20 per million input / output tokens for Claude Opus 5.5, with thinking tokens counted as output because that's how they're billed. Langfuse 5 would also record the Anthropic SDK's own spans automatically, which shows every call twice and doubles the cost. `llm.py` filters those out. Without keys, tracing switches itself off and everything else still works.
-
-## Evaluation (Step 5)
-
-```
 uv run python evaluate.py --top-k 2 --label baseline
 uv run python evaluate.py --top-k 5 --label more-chunks --baseline eval_results/baseline.json
 ```
 
-The first command scores a baseline. The second is the "one improvement": retrieving more chunks per question. It compares against the baseline and lists which questions went up or down. Other improvements to try are re-chunking (`uv run python ingest.py --chunk-size 300 --overlap 60`, then re-run the eval), or editing `SYSTEM_PROMPT` in `assistant.py`. Add `--agent` to evaluate the LangGraph agent instead of plain RAG.
+Optional settings in `.env`: `CLAUDE_MODEL` (default `claude-opus-5-5`) and `CLAUDE_EFFORT` (default `low`). With Langfuse keys set, open your Langfuse project's **Tracing** page to see each question's retrieval, generation, timing and cost.
 
-Two eval questions are deliberately not in the handbook (a gym, the Wi-Fi password). A good answer to those says the handbook doesn't cover it instead of inventing something.
+## Tech stack
 
-### Results (Claude Opus 5.5, 12 questions)
+Python 3.12 · Anthropic Claude API · Chroma · LangGraph · Langfuse · pytest · uv
 
-| Run | Chunks per question | Average score |
-| --- | --- | --- |
-| `baseline-original-judge.json` | 2 | 3.67 (judge flaw, see below) |
-| `baseline.json` | 2 | 4.08 |
-| `more-chunks.json` | 5 | **4.67** (+0.58) |
+## License
 
-**What the first run taught us about the judge.** At first the judge saw only the short notes, so it docked points for true facts the notes didn't mention, like the 10% annual discount. The fix was to give the judge the whole handbook so it can check every claim. The baseline was then re-run with the fixed judge, so both runs above are scored the same way. Comparing runs scored by different judges would not have been fair.
-
-**What the improvement fixed.** With 2 chunks, three answers missed facts that were in the handbook. The assistant honestly said "the handbook doesn't say" rather than inventing anything, but that was still wrong. Retrieving 5 chunks raised all three to 5/5, including the fridge question (1 → 5).
-
-**What's still wrong.** "Can I come in on a Sunday with a Flex membership?" scores 1 even with 5 chunks. The word "Flex membership" pulls every retrieved chunk towards membership prices, so the "closed on Sundays" chunk never makes the top 5. The agent gets it right: it searches a second time for "opening hours weekend". Plain RAG would need a better retriever, such as hybrid keyword + vector search or rewriting the question before searching.
-
-## Design notes
-
-- **Embeddings run locally.** Chroma's default model (all-MiniLM-L6-v2) needs no API key.
-- **Model:** Claude Opus 5.5 at low effort for answers and medium effort for judging. Change it with `CLAUDE_MODEL` / `CLAUDE_EFFORT` in `.env`.
-- **Refusal fallbacks are on** (`fallbacks: "default"`). If Claude's safety filter declines a harmless question by mistake, the API reruns it on a fallback model instead of failing.
-- **Retries:** `with_retry` retries rate limits, overloads and network errors with exponential backoff and jitter. It never retries errors that won't fix themselves, like a bad request or a bad key. The SDK's built-in retries are switched off so the two don't stack.
-- **The calculator never uses `eval()`.** It parses the expression and allows only numbers and arithmetic, so model output can't run code.
-- **The judge uses structured output**, so its reply is always valid JSON with a score from 1 to 5. It gives its reason before its score.
+[MIT](LICENSE)
