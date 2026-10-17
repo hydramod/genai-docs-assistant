@@ -1,0 +1,86 @@
+[
+  {
+    "question": "How much does Resident membership cost per month?",
+    "good_answer": "\u00a3220 per month. May mention unlimited hot-desking during staffed hours, 8 hours meeting room credit and 50 free black-and-white pages.",
+    "answer": "Resident membership costs **\u00a3220 per month**. It includes unlimited hot-desking during staffed hours, 8 hours of meeting room credit per month, and 50 free black-and-white printed pages per month. If you pay for a year upfront, you get a 10% discount.",
+    "score": 5,
+    "reason": "The answer gives the correct price of \u00a3220 per month. Every included benefit it lists matches membership.md: unlimited hot-desking during staffed hours, 8 hours of meeting room credit, and 50 free black-and-white pages. The 10% discount for paying a year upfront is also stated in the handbook, so it is a supported extra and doesn't count against the answer. Nothing is wrong or invented."
+  },
+  {
+    "question": "Can I bring my dog in on a Wednesday?",
+    "good_answer": "No - dogs are only allowed on Fridays. May add they must be registered, on a lead in shared areas, and never in the kitchen.",
+    "answer": "No, dogs are only welcome on Fridays. If you bring your dog on a Friday, register it with reception first and keep it on a lead in shared areas, and note that dogs aren't allowed in the kitchen at any time.",
+    "score": 5,
+    "reason": "The answer correctly says no, because dogs are only allowed on Fridays. The extra details (register with reception first, keep on a lead in shared areas, never in the kitchen) all match the handbook. Nothing is invented or missing."
+  },
+  {
+    "question": "We're a team of 10. Which meeting room should we book?",
+    "good_answer": "Cedar, the boardroom, which seats up to 14. Birch only seats 8 and Oak only 4.",
+    "answer": "Book **Cedar**, the boardroom. It's the only room that seats 10, holding up to 14 people, and it has a projector, a whiteboard wall and video conferencing. Oak seats only 4 and Birch only 8.",
+    "score": 5,
+    "reason": "The answer correctly recommends Cedar, the boardroom, which seats up to 14, and correctly notes that Oak seats only 4 and Birch only 8. The extra details (projector, whiteboard wall, video conferencing) all appear in the handbook. Nothing is invented and it covers everything the notes require."
+  },
+  {
+    "question": "How far in advance can I book a meeting room, and what happens if I cancel an hour before?",
+    "good_answer": "Up to 14 days ahead. Cancelling less than 2 hours before means the booking is still charged or taken from credit, so an hour before is too late.",
+    "answer": "The handbook excerpts I have don't say how far in advance you can book a meeting room, so please ask at reception about that.\n\nIf you cancel an hour before, you'll still be charged, or the time will be taken from your meeting room credit. Cancellations need to be made at least 2 hours before the start time to avoid this.",
+    "score": 3,
+    "reason": "The handbook says rooms can be booked up to 14 days ahead, but the assistant wrongly claims the handbook doesn't cover this and sends the user to reception. That is a required point, missed and misreported. The cancellation part is correct: cancelling an hour before is inside the 2-hour window, so the booking is still charged or taken from credit. With one required element right and one wrong, the answer is partly right."
+  },
+  {
+    "question": "How do I cancel my membership, and do I get money back for the rest of the month?",
+    "good_answer": "Give 30 days' notice through the members portal. No refunds for partial months; the membership runs to the end of the notice period.",
+    "answer": "To cancel, give 30 days' notice through the members portal. Fernhill Works doesn't refund partial months, so you won't get money back for the rest of the month. Your membership stays active until the end of the 30-day notice period.",
+    "score": 5,
+    "reason": "The answer gets the cancellation method right: 30 days' notice through the members portal. It correctly says partial months aren't refunded. It also correctly says the membership stays active until the end of the notice period. Everything matches the handbook, nothing is invented, and there's no padding."
+  },
+  {
+    "question": "I'm a Resident member. How many pages can I print for free, and what does it cost after that?",
+    "good_answer": "50 free black-and-white pages per month, then 5p per black-and-white page; colour is 20p per page.",
+    "answer": "After your free allowance, black-and-white pages cost **5p each** and colour pages **20p each**, charged to your account at the end of the month. The Resident allowance is likely **50 free black-and-white pages per month**, but the excerpt listing that allowance is cut off before the plan name, so please confirm at reception.",
+    "score": 3,
+    "reason": "The costs are correct: 5p per black-and-white page and 20p per colour page, and end-of-month charging is also stated in the handbook. However, the key required fact is hedged. The answer says the allowance is only 'likely' 50 free black-and-white pages and claims the excerpt is cut off. In fact the handbook clearly states this allowance for Resident members in both facilities.md and membership.md. The core figure is present, but the unnecessary uncertainty and the referral to reception make the main required point unclear."
+  },
+  {
+    "question": "When does the kitchen fridge get cleared out?",
+    "good_answer": "Every Friday at 4pm; anything left is thrown away. May mention labelling food with name and date.",
+    "answer": "The handbook excerpts I have don't say when the kitchen fridge is cleared out. One excerpt starts partway through a sentence ending \"...in it is thrown away,\" which may be about the fridge, but the part with the timing is cut off. Reception should be able to tell you the schedule.",
+    "score": 1,
+    "reason": "The handbook (facilities.md) states plainly that the fridge is cleared every Friday at 4pm and anything left in it is thrown away. The assistant wrongly says the handbook doesn't cover this. It claims the excerpt was cut off, but the full handbook includes the timing. So it misses the required answer (Friday 4pm) entirely, and the redirect to reception is unhelpful. This is a wrong answer to a question the handbook clearly covers."
+  },
+  {
+    "question": "What are the opening hours on a Saturday?",
+    "good_answer": "10:00 to 16:00 (staffed hours). May mention Dedicated Desk members have 24/7 access.",
+    "answer": "Fernhill Works is staffed on Saturdays from **10:00 to 16:00**. If you're a Dedicated Desk member, you can also get in outside those hours with your key fob, since you have 24/7 access.",
+    "score": 5,
+    "reason": "The answer correctly gives Saturday staffed hours as 10:00 to 16:00, which matches the handbook. It also says Dedicated Desk members have 24/7 access with a key fob. The notes allow this and the handbook states it. Nothing is invented or missing, and there's no padding."
+  },
+  {
+    "question": "Can I come in on a Sunday with a Flex membership?",
+    "good_answer": "No - the space is closed on Sundays for everyone except Dedicated Desk members, who have 24/7 fob access.",
+    "answer": "The handbook excerpts don't say whether Fernhill Works is open on Sundays or which days Flex members can use, so please check at reception. What they do say is that Flex membership gives you 10 days of hot-desking each month, and unused days don't roll over.",
+    "score": 2,
+    "reason": "The handbook does cover this question: hours-and-access.md says the space is closed on Sundays for everyone except Dedicated Desk members, who have 24/7 fob access. The answer should have been 'No.' Instead the assistant wrongly claims the handbook doesn't say whether the space is open on Sundays, and refers the member to reception. The extra detail it gives (Flex includes 10 hot-desking days a month and unused days don't roll over) is accurate and stated in the handbook, but it doesn't answer the question. Because the assistant failed to give the required answer and misstated what the handbook covers, the response is mostly unhelpful. It invents nothing, though, and it doesn't suggest a wrong 'yes.'"
+  },
+  {
+    "question": "Is there a discount for students?",
+    "good_answer": "Yes - students with a valid student ID get 20% off Flex membership. Should not claim the discount applies to other memberships.",
+    "answer": "Yes, students with a valid student ID get **20% off Flex membership** (normally \u00a3120 per month). The handbook only mentions the student discount for Flex, so for other membership types or combining it with the 10% annual upfront discount, please ask at reception.",
+    "score": 5,
+    "reason": "The answer is correct: students with a valid student ID get 20% off Flex membership, and the \u00a3120/month price is stated in the handbook. It does not claim the discount applies to other memberships, and it rightly notes that the handbook only mentions Flex. It also correctly says the handbook doesn't cover combining the student and annual discounts, and points the user to reception rather than guessing. Nothing is invented."
+  },
+  {
+    "question": "Is there a gym or showers at Fernhill Works?",
+    "good_answer": "The handbook doesn't mention a gym or showers, so the assistant should say it doesn't know (e.g. suggest asking reception) rather than invent an answer.",
+    "answer": "The handbook excerpts don't mention a gym or showers, so I can't say whether Fernhill Works has them. Please ask at reception.",
+    "score": 5,
+    "reason": "The handbook doesn't mention a gym or showers. The assistant says so correctly, invents nothing, and suggests asking reception, which matches the notes. The answer is concise and complete."
+  },
+  {
+    "question": "What is this month's Wi-Fi password?",
+    "good_answer": "The handbook doesn't give the password. It says the password changes on the first Monday of each month and is shown on the screen at reception. Must not invent a password.",
+    "answer": "The handbook doesn't list the current password. It changes on the first Monday of every month and is shown on the screen at reception, so check there. For reference, the members network is called **Fernhill-Members**.",
+    "score": 5,
+    "reason": "The answer correctly says the handbook doesn't give the current password and doesn't invent one. It also correctly states that the password changes on the first Monday of every month and is shown on the screen at reception. The extra detail that the members network is called Fernhill-Members is stated in the handbook, so it doesn't lower the score. All required elements are present and nothing is wrong or invented."
+  }
+]
