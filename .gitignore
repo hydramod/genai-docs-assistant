@@ -1,0 +1,12 @@
+# API keys - never commit these
+.env
+
+# Local vector database, rebuilt by running ingest.py
+chroma_db/
+
+# Virtual environment created by uv
+.venv/
+
+# Python and pytest caches
+__pycache__/
+.pytest_cache/
