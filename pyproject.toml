@@ -1,0 +1,18 @@
+[project]
+name = "docs-assistant"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=1.15.0",
+    "chromadb>=1.5.9",
+    "langfuse>=5.0.2",
+    "langgraph>=1.2.16",
+    "python-dotenv>=1.2.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
