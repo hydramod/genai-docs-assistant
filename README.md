@@ -25,19 +25,9 @@ A: The handbook excerpts I have don't mention a gym, so I can't tell you whether
 
 ## How it works
 
-```mermaid
-flowchart LR
-    docs[docs/*.md] -->|chunk_text: 500 chars, 100 overlap| chroma[(Chroma<br/>local embeddings)]
-    q([question]) --> rag[answer_question]
-    rag -->|top-k chunks| chroma
-    rag -->|excerpts + question| claude{{Claude}}
-    q --> agent[LangGraph agent]
-    agent <-->|decides which tool| claude
-    agent --> search[search_handbook] --> chroma
-    agent --> calc[calculator]
-    eval[evaluate.py] -->|12 questions| rag
-    eval --> judge[judge: score 1-5] --> claude
-```
+![System architecture: ingestion into Chroma, a RAG pipeline and a LangGraph agent, an LLM gateway in front of the Anthropic API with tracing to Langfuse, and an evaluation harness with an LLM judge](assets/architecture.png)
+
+<sub>Made in draw.io. Open [`assets/architecture.drawio`](assets/architecture.drawio) in draw.io to edit it.</sub>
 
 | File | What it does |
 | --- | --- |
