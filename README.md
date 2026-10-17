@@ -27,8 +27,6 @@ A: The handbook excerpts I have don't mention a gym, so I can't tell you whether
 
 ![System architecture: ingestion into Chroma, a RAG pipeline and a LangGraph agent, an LLM gateway in front of the Anthropic API with tracing to Langfuse, and an evaluation harness with an LLM judge](assets/architecture.png)
 
-<sub>Made in draw.io. Open [`assets/architecture.drawio`](assets/architecture.drawio) in draw.io to edit it.</sub>
-
 | File | What it does |
 | --- | --- |
 | `ingest.py` | Splits the handbook into overlapping chunks and stores them in a local Chroma database |
