@@ -1,0 +1,50 @@
+[
+  {
+    "question": "How much does Resident membership cost per month?",
+    "good_answer": "£220 per month. May mention unlimited hot-desking during staffed hours, 8 hours meeting room credit and 50 free black-and-white pages."
+  },
+  {
+    "question": "Can I bring my dog in on a Wednesday?",
+    "good_answer": "No - dogs are only allowed on Fridays. May add they must be registered, on a lead in shared areas, and never in the kitchen."
+  },
+  {
+    "question": "We're a team of 10. Which meeting room should we book?",
+    "good_answer": "Cedar, the boardroom, which seats up to 14. Birch only seats 8 and Oak only 4."
+  },
+  {
+    "question": "How far in advance can I book a meeting room, and what happens if I cancel an hour before?",
+    "good_answer": "Up to 14 days ahead. Cancelling less than 2 hours before means the booking is still charged or taken from credit, so an hour before is too late."
+  },
+  {
+    "question": "How do I cancel my membership, and do I get money back for the rest of the month?",
+    "good_answer": "Give 30 days' notice through the members portal. No refunds for partial months; the membership runs to the end of the notice period."
+  },
+  {
+    "question": "I'm a Resident member. How many pages can I print for free, and what does it cost after that?",
+    "good_answer": "50 free black-and-white pages per month, then 5p per black-and-white page; colour is 20p per page."
+  },
+  {
+    "question": "When does the kitchen fridge get cleared out?",
+    "good_answer": "Every Friday at 4pm; anything left is thrown away. May mention labelling food with name and date."
+  },
+  {
+    "question": "What are the opening hours on a Saturday?",
+    "good_answer": "10:00 to 16:00 (staffed hours). May mention Dedicated Desk members have 24/7 access."
+  },
+  {
+    "question": "Can I come in on a Sunday with a Flex membership?",
+    "good_answer": "No - the space is closed on Sundays for everyone except Dedicated Desk members, who have 24/7 fob access."
+  },
+  {
+    "question": "Is there a discount for students?",
+    "good_answer": "Yes - students with a valid student ID get 20% off Flex membership. Should not claim the discount applies to other memberships."
+  },
+  {
+    "question": "Is there a gym or showers at Fernhill Works?",
+    "good_answer": "The handbook doesn't mention a gym or showers, so the assistant should say it doesn't know (e.g. suggest asking reception) rather than invent an answer."
+  },
+  {
+    "question": "What is this month's Wi-Fi password?",
+    "good_answer": "The handbook doesn't give the password. It says the password changes on the first Monday of each month and is shown on the screen at reception. Must not invent a password."
+  }
+]
